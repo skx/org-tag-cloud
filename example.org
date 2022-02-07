@@ -1,0 +1,43 @@
+#+Title:   Example
+#+AUTHOR:  Steve Kemp
+#+LATEX: \setlength\parindent{0pt}
+#+OPTIONS: num:nil html-postamble:nil toc:nil
+#+HTML_HEAD: <style type="text/css">.outline-3, .outline-text-4{ margin-left: 50px; }</style>
+#+HTML_HEAD: <style type="text/css">h2 { border-bottom: 1px solid grey; padding-top: 50px; } h3{ border-bottom: 1px solid grey; }</style>
+#+EXPORT_EXCLUDE_TAGS: noexport
+
+* Introduction                                                 :introduction:
+This is a simple example of a tag-cloud.
+
+* Tags                                                             :noexport:
+
+#+NAME: org-tag-cloud
+#+BEGIN_SRC emacs-lisp :colnames '(Frequency Tag) :exports results
+(org-tag-cloud-populate)
+#+END_SRC
+
+#+RESULTS: org-tag-cloud
+| Frequency | Tag          |
+|-----------+--------------|
+|         2 | [[elisp:(org-tags-view nil "household")][household]]    |
+|         1 | [[elisp:(org-tags-view nil "introduction")][introduction]] |
+|         1 | [[elisp:(org-tags-view nil "noexport")][noexport]]     |
+|         1 | [[elisp:(org-tags-view nil "laundry")][laundry]]      |
+|         1 | [[elisp:(org-tags-view nil "windows")][windows]]      |
+|         1 | [[elisp:(org-tags-view nil "org")][org]]          |
+|         1 | [[elisp:(org-tags-view nil "github")][github]]       |
+
+* Tasks
+This section contains some tasts, each with tags.
+
+** DONE Run some laundry                                 :household:laundry:
+CLOSED: [2022-02-07 Mon 18:46]
+- Clean clothes are nice.
+** DONE Clean the windows                                :household:windows:
+CLOSED: [2022-02-07 Mon 18:47]
+- That will be nice too.
+** DONE Breakout more =org-mode= stuff into packages              :org:github:
+CLOSED: [2022-02-07 Mon 18:47]
+- Created two packages so far
+  - org-tag-cloud
+  - org-nested
