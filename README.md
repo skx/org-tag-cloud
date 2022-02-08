@@ -9,18 +9,8 @@ This package allows you to easily generate, or update, a table of all the tags y
 * Load an org-file, and position the point at a suitable location.
 * Run `M-x org-tag-cloud-insert` to insert a source-block at the point.
 
-In the future you can update your tag-cloud by running `M-x org-tag-cloud-update`.
+In the future you can update your tag-cloud by running `M-x org-tag-cloud-update`.  When you save your document in the future any tag-cloud will be automatically updated.
 
-If you wish this can be done automatically every time you save your file by adding a hook:
-
-```lisp
-(defun skx-org-tag-cloud-update-hook ()
-  (when (eq major-mode 'org-mode)
-    (org-tag-cloud-update)))
-
-(add-hook 'before-save-hook #'skx-org-tag-cloud-update-hook)
-
-```
 
 
 ## Tag Search Results
