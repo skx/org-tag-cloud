@@ -15,7 +15,9 @@ The block can be executed via org-tag-cloud-update."
 "))
 
 (defun org-tag-cloud-update ()
-  "Update the existing tag-cloud, by executing the block named 'org-tag-cloud'"
+  "Update the existing tag-cloud, by executing the block named 'org-tag-cloud'.
+
+This will also be done automatically when the document is saved."
   (interactive "*")
   (save-excursion
     (org-save-outline-visibility t
@@ -47,4 +49,13 @@ The block can be executed via org-tag-cloud-update."
                (cl-sort result #'> :key #'car)))))
 
 
+; Update tag-cloud on-save
+(defun org-tag-cloud-update-hook ()
+  (when (or (eq major-mode 'org-mode)
+            (eq major-mode 'org-diary-mode))
+    (org-tag-cloud-update)))
+
+(add-hook 'before-save-hook #'org-tag-cloud-update-hook)
+
+; All done
 (provide 'org-tag-cloud)
