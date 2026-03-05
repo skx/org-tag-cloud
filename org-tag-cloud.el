@@ -1,4 +1,4 @@
-;;; org-people.el --- Easily maintain a tag-cloud of org-mode tags. -*- lexical-binding: t; -*-
+;;; org-tag-cloud.el --- Easily maintain a tag-cloud of org-mode tags. -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022 - 2026  Steve Kemp
 
@@ -6,8 +6,8 @@
 ;; Maintainer: Steve Kemp
 ;; Version: 0.2
 ;; Package-Requires: ((emacs "29.1") (org "9.0"))
-;; Keywords: outlines, contacts, people
-;; URL: https://github.com/skx/org-people
+;; Keywords: outlines, tagcloud, tags
+;; URL: https://github.com/skx/org-tag-cloud
 
 ;; This file is not part of GNU Emacs.
 
@@ -145,7 +145,7 @@ This is the magic that updates the tag-cloud."
   "If the current mode is derived from `org-mode' update the tag cloud.
 
 This will silently and safely do nothing if there is no `dblock' with the
-name 'tagcloud' within the document."
+name \='tagcloud\=' within the document."
   (if (derived-mode-p 'org-mode)
     (org-tag-cloud-update)))
 
