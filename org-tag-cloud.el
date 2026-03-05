@@ -96,7 +96,7 @@ name, and can be found by that name with `org-find-dblock'."
 
 ;;; org-mode "tag:" link
 
-(defun org-tag--open-tag (tag)
+(defun org-tag-cloud--open-tag (tag)
   "Handler invoked when a TAG: link is clicked."
   (org-tags-view nil tag))
 
@@ -104,7 +104,7 @@ name, and can be found by that name with `org-find-dblock'."
 ;; Create a new "tag:" link
 (org-link-set-parameters
  "tag"
- :follow #'org-tag--open-tag)
+ :follow #'org-tag-cloud--open-tag)
 
 
 
