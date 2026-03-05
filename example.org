@@ -7,29 +7,25 @@
 #+EXPORT_EXCLUDE_TAGS: noexport
 
 * Introduction                                                 :introduction:
-This is a simple example of a tag-cloud.
+This document holds an example of a tag-cloud.
 
 * Tags                                                             :noexport:
 
-#+NAME: org-tag-cloud
-#+BEGIN_SRC emacs-lisp :colnames '(Frequency Tag) :exports results
-(org-tag-cloud-populate)
-#+END_SRC
-
-#+RESULTS: org-tag-cloud
+#+BEGIN: tagcloud
 | Frequency | Tag          |
 |-----------+--------------|
-|         2 | [[elisp:(org-tags-view nil "household")][household]]    |
-|         1 | [[elisp:(org-tags-view nil "introduction")][introduction]] |
-|         1 | [[elisp:(org-tags-view nil "noexport")][noexport]]     |
-|         1 | [[elisp:(org-tags-view nil "laundry")][laundry]]      |
-|         1 | [[elisp:(org-tags-view nil "windows")][windows]]      |
-|         1 | [[elisp:(org-tags-view nil "org")][org]]          |
-|         1 | [[elisp:(org-tags-view nil "github")][github]]       |
+|         2 | [[tag:household][household]]    |
+|         1 | [[tag:github][github]]       |
+|         1 | [[tag:org][org]]          |
+|         1 | [[tag:windows][windows]]      |
+|         1 | [[tag:laundry][laundry]]      |
+|         1 | [[tag:noexport][noexport]]     |
+|         1 | [[tag:introduction][introduction]] |
+
+#+END:
 
 * Tasks
 This section contains some tasts, each with tags.
-
 ** DONE Run some laundry                                 :household:laundry:
 CLOSED: [2022-02-07 Mon 18:46]
 - Clean clothes are nice.
