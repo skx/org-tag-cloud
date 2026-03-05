@@ -68,3 +68,4 @@ you have tagged with the value `foo`.
 
 * There can only be one tag cloud in a specific document, because the name is fixed.
 * The tag cloud refers only to the current file, you cannot make a cloud of tags used across multiple `org-mode' files.
+
