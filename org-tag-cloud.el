@@ -68,6 +68,16 @@
 ;; a cloud of tags used across multiple `org-mode' files.
 ;;
 
+;;; Configuration:
+
+(defvar org-tag-name-first t
+  "Specify the column order on the generated table.
+
+When this is non-nil the tag name is first, followed by
+the frequency.  Otherwise the frequency comes first,
+with the tag second.")
+
+
 ;;; Code:
 
 (require 'cl-lib)
@@ -88,13 +98,13 @@ populated via a call to `org-tag-cloud-update'."
   "Update any existing tag-cloud.
 
 This relies upon the fact that the tag-cloud has a static
-name, and can be found by that name with `org-find-dblock'."
+name, which can be used by `org-find-dblock'."
   (interactive "*")
   (if (org-find-dblock "tagcloud")
       (org-update-dblock)))
 
 
-;;; org-mode "tag:" link
+;; tag:-link support
 
 (defun org-tag-cloud--open-tag (tag)
   "Handler invoked when a TAG: link is clicked."
@@ -113,14 +123,22 @@ name, and can be found by that name with `org-find-dblock'."
 (defun org-dblock-write:tagcloud (_params)
   "Called when a block of name tagcloud is to be processed.
 
-This is the magic that updates the tag-cloud."
+This is the magic that updates the tag-cloud, the variable
+`org-tag-name-first' is used to determine the column-order."
   (let ((tags (org-tag-cloud--collect)))
-    (insert "| Frequency | Tag |\n|-\n")
+    (if org-tag-name-first
+        (insert "| Tag | Frequency |\n|-\n")
+      (insert "| Frequency | Tag |\n|-\n"))
     (dolist (row tags)
-      (insert (format "| %d | %s |\n"
-                      (car row)
-                      (cadr row))))
-                      (org-table-align)))
+      (if org-tag-name-first
+          (insert (format "| %s | %d |\n"
+                          (cadr row)
+                      (car row)))
+        (insert (format "| %d | %s |\n"
+                        (car row)
+                        (cadr row)))))
+    ;; fixup formatting once generated
+    (org-table-align)))
 
 
 (defun org-tag-cloud--collect ()
@@ -140,7 +158,7 @@ This is the magic that updates the tag-cloud."
              finally return (cl-sort result #'> :key #'car))))
 
 
-;;; Utility
+;; Utility
 (defun org-tag-cloud-save-hook ()
   "If the current mode is derived from `org-mode' update the tag cloud.
 

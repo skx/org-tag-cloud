@@ -3,10 +3,10 @@
 This package is designed to allow you to maintain a "tag cloud"
 of all the tags stored within a particular `org-mode` file.
 
-The cloud is rendered as an `org-mode' table and can be updated
+The cloud is rendered as an `org-mode` table and can be updated
 automatically when the file is saved.  The rendered table will
 make each tag clickable via a newly-installed protocol handler
-for links of the form [[tag::foo].
+for links of the form `[[tag::foo]]`.
 
 
 
@@ -25,13 +25,15 @@ a readable format:
 The cloud is rendered as an `org-mode` table and can be updated
 automatically when the file is saved.  The rendered table will
 make each tag clickable via a newly-installed protocol handler
-for links of the form [[tag::foo].
+for links of the form `[[tag::foo]]`.
 
 There are three main functions of interest:
 
 * `org-tag-cloud-insert` - Insert a tag cloud at the current point.
 * `org-tag-cloud-update` - Update an existing cloud.
 * `org-tag-cloud-save-hook` - Something to add to save-hook to automate updates when files are saved.
+
+The only configuration value is `org-tag-name-first`, when this is non-nil the tag-name is listed in the first column, followed by the frequency as the second column.  When nil the ordering is reversed.
 
 
 
@@ -68,4 +70,3 @@ you have tagged with the value `foo`.
 
 * There can only be one tag cloud in a specific document, because the name is fixed.
 * The tag cloud refers only to the current file, you cannot make a cloud of tags used across multiple `org-mode' files.
-
