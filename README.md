@@ -33,7 +33,7 @@ There are three main functions of interest:
 * `org-tag-cloud-update` - Update an existing cloud.
 * `org-tag-cloud-save-hook` - Something to add to save-hook to automate updates when files are saved.
 
-The only configuration value is `org-tag-name-first`, when this is non-nil the tag-name is listed in the first column, followed by the frequency as the second column.  When nil the ordering is reversed.
+The only configuration value is `org-tag-cloud-name-first`, when this is non-nil the tag-name is listed in the first column, followed by the frequency as the second column.  When nil the ordering is reversed.
 
 
 

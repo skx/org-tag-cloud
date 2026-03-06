@@ -70,7 +70,7 @@
 
 ;;; Configuration:
 
-(defvar org-tag-name-first t
+(defvar org-tag-cloud-name-first t
   "Specify the column order on the generated table.
 
 When this is non-nil the tag name is first, followed by
@@ -124,13 +124,13 @@ name, which can be used by `org-find-dblock'."
   "Called when a block of name tagcloud is to be processed.
 
 This is the magic that updates the tag-cloud, the variable
-`org-tag-name-first' is used to determine the column-order."
+`org-tag-cloud-name-first' is used to determine the column-order."
   (let ((tags (org-tag-cloud--collect)))
-    (if org-tag-name-first
+    (if org-tag-cloud-name-first
         (insert "| Tag | Frequency |\n|-\n")
       (insert "| Frequency | Tag |\n|-\n"))
     (dolist (row tags)
-      (if org-tag-name-first
+      (if org-tag-cloud-name-first
           (insert (format "| %s | %d |\n"
                           (cadr row)
                       (car row)))
