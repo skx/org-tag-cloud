@@ -1,4 +1,4 @@
-;;; org-tag-cloud.el --- Easily maintain a tag-cloud of org-mode tags. -*- lexical-binding: t; -*-
+;;; org-tag-cloud.el --- Easily maintain a tag-cloud of org-mode tags -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022 - 2026  Steve Kemp
 
