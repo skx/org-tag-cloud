@@ -4,7 +4,7 @@
 
 ;; Author: Steve Kemp
 ;; Maintainer: Steve Kemp
-;; Version: 0.2
+;; Version: 0.3
 ;; Package-Requires: ((emacs "29.1") (org "9.0"))
 ;; Keywords: outlines, tagcloud, tags
 ;; URL: https://github.com/skx/org-tag-cloud
