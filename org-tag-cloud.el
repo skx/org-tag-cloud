@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2022 - 2026  Steve Kemp
 
-;; Author: Steve Kemp
-;; Maintainer: Steve Kemp
+;; Author: Steve Kemp <steve@steve.fi>
+;; Maintainer: Steve Kemp <steve@steve.fi>
 ;; Version: 0.3
 ;; Package-Requires: ((emacs "29.1") (org "9.0"))
 ;; Keywords: outlines, tagcloud, tags
