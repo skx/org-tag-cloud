@@ -101,8 +101,14 @@ This relies upon the fact that the tag-cloud has a static
 name, which can be used by `org-find-dblock'."
   (interactive "*")
   (if (org-find-dblock "tagcloud")
-      (org-update-dblock)))
-
+      (let ((m (point-marker))
+            (ws (window-start)))
+        (org-with-wide-buffer
+         (save-excursion
+           (org-update-dblock)))
+        (set-window-start nil ws)
+        (goto-char m)
+        (set-marker m nil))))
 
 ;; tag:-link support
 
