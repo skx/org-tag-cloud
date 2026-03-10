@@ -1,10 +1,5 @@
 EMACS ?= emacs
 
-# Run all tests by default.
-MATCH ?=
-
-
-
 org-tag-cloud.elc: org-tag-cloud.el
 	$(EMACS) --batch -L . -l org-tag-cloud.el -eval '(byte-compile-file "org-tag-cloud.el")'
 
