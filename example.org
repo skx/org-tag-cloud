@@ -11,21 +11,20 @@ This document holds an example of a tag-cloud.
 
 * Tags                                                             :noexport:
 
-#+BEGIN: tagcloud
-| Frequency | Tag          |
-|-----------+--------------|
-|         2 | [[tag:household][household]]    |
-|         1 | [[tag:github][github]]       |
-|         1 | [[tag:org][org]]          |
-|         1 | [[tag:windows][windows]]      |
-|         1 | [[tag:laundry][laundry]]      |
-|         1 | [[tag:noexport][noexport]]     |
-|         1 | [[tag:introduction][introduction]] |
-
+#+BEGIN: tagcloud :sort alpha
+| Tag          | Frequency |
+|--------------+-----------|
+| [[tag:github][github]]       |         1 |
+| [[tag:household][household]]    |         2 |
+| [[tag:introduction][introduction]] |         1 |
+| [[tag:laundry][laundry]]      |         1 |
+| [[tag:noexport][noexport]]     |         1 |
+| [[tag:org][org]]          |         1 |
+| [[tag:windows][windows]]      |         1 |
 #+END:
 
 * Tasks
-This section contains some tasts, each with tags.
+ This section contains some tasts, each with tags.
 ** DONE Run some laundry                                 :household:laundry:
 CLOSED: [2022-02-07 Mon 18:46]
 - Clean clothes are nice.

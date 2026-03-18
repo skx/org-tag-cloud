@@ -1,9 +1,18 @@
+NAME = org-tag-cloud
 EMACS ?= emacs
 
-org-tag-cloud.elc: org-tag-cloud.el
-	$(EMACS) --batch -L . -l org-tag-cloud.el -eval '(byte-compile-file "org-tag-cloud.el")'
+# Run all tests by default.
+MATCH ?=
+
+.PHONY: test
+
+test:
+	cd test/ && $(EMACS) --batch -L . -L .. -l ${NAME}-test.el -eval '(ert-run-tests-batch-and-exit "$(MATCH)")'
 
 clean:
 	find . -name '*.elc' -delete
 
-bytecompile: org-tag-cloud.elc
+${NAME}.elc: ${NAME}.el
+	$(EMACS) --batch -L . -l ${NAME}.el -eval '(byte-compile-file "org-tag-cloud.el")'
+
+bytecompile: ${NAME}.elc

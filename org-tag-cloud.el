@@ -59,16 +59,39 @@
 ;;  :hook
 ;;    (before-save-hook . org-tag-cloud-save-hook))
 
+;;; Configuration:
+
+;; Sorting may be set to sort by the tag name, or the frequency
+;; count - the latter is the default.  Specify the value in either
+;; the configuration value `org-tag-cloud-sort-method' or inside
+;; the block itself, for example:
+;;
+;;     #+BEGIN: tagcloud :sort alpha
+;; or
+;;     #+BEGIN: tagcloud :sort frequency
+;;
+
 ;;; Limitations:
 
-;; There can only be one tag cloud in a specific document, because
-;; the name is fixed.
+;; Two main limitations are related:
 ;;
-;; The tag cloud refers only to the current file, you cannot make
-;; a cloud of tags used across multiple `org-mode' files.
+;;  1. There can only be one tag cloud in a specific document.
+;;
+;;  2. The tag cloud refers only to the current file, you cannot
+;;     make a cloud of tags used across multiple `org-mode' files.
 ;;
 
 ;;; Configuration:
+
+(defvar org-tag-cloud-block-name "tagcloud"
+  "Name of the dynamic block used for tag clouds.")
+
+(defvar org-tag-cloud-sort-method 'frequency
+  "Method to sort tags in the tag cloud.
+
+Possible values:
+- \='frequency : Sort by frequency, descending (default)
+- \='alpha     : Sort alphabetically by tag name.")
 
 (defvar org-tag-cloud-name-first t
   "Specify the column order on the generated table.
@@ -100,15 +123,18 @@ populated via a call to `org-tag-cloud-update'."
 This relies upon the fact that the tag-cloud has a static
 name, which can be used by `org-find-dblock'."
   (interactive "*")
-  (if (org-find-dblock "tagcloud")
-      (let ((m (point-marker))
-            (ws (window-start)))
-        (org-with-wide-buffer
-         (save-excursion
-           (org-update-dblock)))
-        (set-window-start nil ws)
-        (goto-char m)
-        (set-marker m nil))))
+  (when (org-find-dblock org-tag-cloud-block-name)
+    (let ((pos (copy-marker (point)))
+          (win (selected-window))
+          (start (window-start)))
+      (unwind-protect
+          (org-with-wide-buffer
+           (org-update-dblock))
+        ;; Restore everything explicitly
+        (when (marker-buffer pos)
+          (set-window-start win start)
+          (goto-char pos)
+          (set-marker pos nil))))))
 
 ;; tag:-link support
 
@@ -126,43 +152,54 @@ name, which can be used by `org-find-dblock'."
 
 ;;; dblock glue
 
-(defun org-dblock-write:tagcloud (_params)
+(defun org-dblock-write:tagcloud (params)
   "Called when a block of name tagcloud is to be processed.
 
 This is the magic that updates the tag-cloud, the variable
-`org-tag-cloud-name-first' is used to determine the column-order."
-  (let ((tags (org-tag-cloud--collect)))
-    (if org-tag-cloud-name-first
-        (insert "| Tag | Frequency |\n|-\n")
-      (insert "| Frequency | Tag |\n|-\n"))
-    (dolist (row tags)
-      (if org-tag-cloud-name-first
-          (insert (format "| %s | %d |\n"
-                          (cadr row)
-                      (car row)))
-        (insert (format "| %d | %s |\n"
-                        (car row)
-                        (cadr row)))))
-    ;; fixup formatting once generated
-    (org-table-align)))
+`org-tag-cloud-name-first' is used to determine the column-order.
 
+PARAMS is a plist of dynamic block parameters.  Recognized keys:
+
+  :sort   - \='frequency or \='alpha (default \='frequency)
+  :name   - name of the block (optional, for multiple clouds)"
+  (let* ((sort-method (or (plist-get params :sort) 'frequency))
+         (name-first org-tag-cloud-name-first)
+         (tags (let ((org-tag-cloud-sort-method sort-method))
+                 (org-tag-cloud--collect)))
+         (header (if name-first "| Tag | Frequency |\n|-\n"
+                   "| Frequency | Tag |\n|-\n"))
+         (rows
+          (mapconcat
+           (lambda (row)
+             (pcase-let ((`(,count ,tag) row))
+               (if name-first
+                   (format "| %s | %d |" tag count)
+                 (format "| %d | %s |" count tag))))
+           tags
+           "\n")))  ;; join with newline, no trailing newline
+    (insert header rows)
+    (org-table-align)))
 
 (defun org-tag-cloud--collect ()
   "Find the distinct tags, and their counts, within the current file."
-  (let (tags)
+  (let ((counts (make-hash-table :test #'equal)))
+    ;; collect tags
     (save-excursion
       (goto-char (point-min))
       (while (re-search-forward org-complex-heading-regexp nil t)
         (dolist (tag (org-get-tags))
           (unless (string-empty-p tag)
-            (push tag tags)))))
-    (cl-loop for tag in (cl-remove-duplicates tags :test #'string=)
-             collect
-             (list (cl-count tag tags :test #'string=)
-                   (format "[[tag:%s][%s]]" tag tag))
-             into result
-             finally return (cl-sort result #'> :key #'car))))
-
+            (cl-incf (gethash tag counts 0))))))
+    ;; convert to list of (count display)
+    (let ((result
+           (cl-loop for tag being the hash-keys of counts
+                    using (hash-values count)
+                    collect (list count (format "[[tag:%s][%s]]" tag tag)))))
+      ;; sort based on `org-tag-cloud-sort-method`
+      (cl-case org-tag-cloud-sort-method
+        (frequency (cl-sort result #'> :key #'car))
+        (alpha (cl-sort result #'string< :key (lambda (x) (cadr x))))
+        (t (error "Invalid `org-tag-cloud-sort-method`: %S" org-tag-cloud-sort-method))))))
 
 ;; Utility
 (defun org-tag-cloud-save-hook ()
@@ -170,7 +207,7 @@ This is the magic that updates the tag-cloud, the variable
 
 This will silently and safely do nothing if there is no `dblock' with the
 name \='tagcloud\=' within the document."
-  (if (derived-mode-p 'org-mode)
+  (when (derived-mode-p 'org-mode)
     (org-tag-cloud-update)))
 
 

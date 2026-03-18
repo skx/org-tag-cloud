@@ -33,7 +33,9 @@ There are three main functions of interest:
 * `org-tag-cloud-update` - Update an existing cloud.
 * `org-tag-cloud-save-hook` - Something to add to save-hook to automate updates when files are saved.
 
-The only configuration value is `org-tag-cloud-name-first`, when this is non-nil the tag-name is listed in the first column, followed by the frequency as the second column.  When nil the ordering is reversed.
+The main configuration value is `org-tag-cloud-name-first`, when this is non-nil the tag-name is listed in the first column, followed by the frequency as the second column.  When nil the ordering is reversed.
+
+Sorting defaults to showing the table with the highest frequencies first, but you might prefer to show by alphabetical tag.  See example.org, or the package for how to set that.
 
 
 
@@ -68,5 +70,5 @@ you have tagged with the value `foo`.
 
 ## Limitations
 
-* There can only be one tag cloud in a specific document, because the name is fixed.
+* There can only be one tag cloud in a specific document.
 * The tag cloud refers only to the current file, you cannot make a cloud of tags used across multiple `org-mode' files.
