@@ -32,7 +32,7 @@
 ;; The cloud is rendered as an `org-mode' table and can be updated
 ;; automatically when the file is saved.  The rendered table will
 ;; make each tag clickable via a newly-installed protocol handler
-;; for links of the form [[tag::foo].
+;; for links of the form [[tag::foo]].
 ;;
 ;; There are three main functions of interest:
 ;;
